@@ -38,7 +38,7 @@ class TMDbAgent(Agent.Movies):
     elif media.openSubtitlesHash is not None:
       match = GetImdbIdFromHash(media.openSubtitlesHash, lang)
 
-  def update(self, metadata, lang): 
+  def update(self, metadata, media, lang): 
     proxy = Proxy.Preview
     try:
       tmdb_dict = JSON.ObjectFromURL(TMDB_GETINFO_TMDB % metadata.id)[0] #get the full TMDB info record using the TMDB id
