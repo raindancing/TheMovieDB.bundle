@@ -45,6 +45,12 @@ class TMDbAgent(Agent.Movies):
     except:
       Log('Exception fetching JSON from theMovieDB (1).')
       return None
+      
+    votes = tmdb_dict['votes']
+    rating = tmdb_dict['rating']
+    if votes > 20:
+      metadata.rating = rating
+      
     i = 0
     for p in tmdb_dict['posters']:
       if p['image']['size'] == 'original':
