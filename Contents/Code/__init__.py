@@ -45,12 +45,54 @@ class TMDbAgent(Agent.Movies):
     except:
       Log('Exception fetching JSON from theMovieDB (1).')
       return None
-      
+
+    # Rating.
     votes = tmdb_dict['votes']
     rating = tmdb_dict['rating']
     if votes > 20:
       metadata.rating = rating
+    
+    # Tagline.
+    metadata.tagline = tmdb_dict['tagline']
       
+    # Content rating.
+    metadata.content_rating = tmdb_dict['certification']
+      
+    # Summary.
+    metadata.summary = tmdb_dict['overview']
+    
+    # Release date.
+    try: metadata.originally_available_at = Datetime.ParseDate(tmdb_dict['released']).date()
+    except: pass
+      
+    # Runtime.
+    try: metadata.duration = int(tmdb_dict['runtime']) * 60 * 1000
+    except: pass
+      
+    # Genres.
+    metadata.genres.clear()
+    for genre in tmdb_dict['genres']:
+      metadata.genres.add(genre['name'])
+      
+    # Studio.
+    try: metadata.studio = tmdb_dict['studios'][0]['name']
+    except: pass
+
+    # Cast.
+    metadata.directors.clear()
+    metadata.writers.clear()
+    metadata.roles.clear()
+    
+    for member in tmdb_dict['cast']:
+      if member['job'] == 'Director':
+        metadata.directors.add(member['name'])
+      elif member['job'] == 'Author':
+        metadata.writers.add(member['name'])
+      elif member['job'] == 'Actor':
+        role = metadata.roles.new()
+        role.role = member['character']
+        role.actor = member['name']
+    
     i = 0
     for p in tmdb_dict['posters']:
       if p['image']['size'] == 'original':
