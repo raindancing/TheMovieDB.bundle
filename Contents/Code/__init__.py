@@ -25,7 +25,7 @@ def GetImdbIdFromHash(openSubtitlesHash, lang):
     return None
   
 class TMDbAgent(Agent.Movies):
-  name = 'themoviedb'
+  name = 'TheMovieDB'
   languages = [Locale.Language.English]
   primary_provider = False
   contributes_to = ['com.plexapp.agents.imdb']
