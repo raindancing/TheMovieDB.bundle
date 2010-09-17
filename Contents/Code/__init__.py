@@ -62,7 +62,6 @@ class TMDbAgent(Agent.Movies):
     metadata.summary = tmdb_dict['overview']
     if metadata.summary == 'No overview found.':
       metadata.summary = ""
-    print "SUMMARY", metadata.summary
     
     # Release date.
     try: metadata.originally_available_at = Datetime.ParseDate(tmdb_dict['released']).date()
