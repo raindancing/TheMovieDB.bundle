@@ -49,7 +49,7 @@ class TMDbAgent(Agent.Movies):
     # Rating.
     votes = tmdb_dict['votes']
     rating = tmdb_dict['rating']
-    if votes > 20:
+    if votes > 3:
       metadata.rating = rating
     
     # Tagline.
