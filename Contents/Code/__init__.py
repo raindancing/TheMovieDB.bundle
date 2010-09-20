@@ -5,7 +5,7 @@ TMDB_GETINFO_TMDB = 'http://api.themoviedb.org/2.1/Movie.getInfo/en/json/a3dc111
 TMDB_GETINFO_HASH = 'http://api.themoviedb.org/2.1/Hash.getInfo/en/json/a3dc111e66105f6387e99393813ae4d5/%s'
 
 def Start():
-  HTTP.CacheTime = CACHE_1DAY
+  HTTP.CacheTime = CACHE_1HOUR * 4
   
 @expose
 def GetImdbIdFromHash(openSubtitlesHash, lang):
