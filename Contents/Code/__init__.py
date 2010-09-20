@@ -98,25 +98,28 @@ class TMDbAgent(Agent.Movies):
     i = 0
     for p in tmdb_dict['posters']:
       if p['image']['size'] == 'original':
+        i += 1
         if p['image']['url'] not in metadata.posters:
           p_id = p['image']['id']
+          
+          # Find a thumbnail.
           for t in tmdb_dict['posters']:
             if t['image']['id'] == p_id and t['image']['size'] == 'mid':
               thumb = HTTP.Request(t['image']['url'])
-              i += 1
               break
+              
           try: metadata.posters[p['image']['url']] = proxy(thumb, sort_order = i)
           except: pass
     
     i = 0
     for b in tmdb_dict['backdrops']:
-      if b['image']['size'] == 'original':     
+      if b['image']['size'] == 'original':
+        i += 1
         if b['image']['url'] not in metadata.art:
           b_id = b['image']['id']
           for t in tmdb_dict['backdrops']:
             if t['image']['id'] == b_id and t['image']['size'] == 'poster':
               thumb = HTTP.Request(t['image']['url'])
-              i += 1
               break 
           try: metadata.art[b['image']['url']] = proxy(thumb, sort_order = i)
           except: pass
