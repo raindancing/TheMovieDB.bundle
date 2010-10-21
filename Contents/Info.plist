@@ -20,5 +20,11 @@
 	<string>2</string>
 	<key>PlexPluginMode</key>
 	<string>AlwaysOn</string>
+	<key>PlexAgentAttributionText</key>
+	  <string>
+	    &lt;a href=&quot;www.themoviedb.org&quot;&gt;themoviedb.org&lt;/a&gt; is a free and open movie database. &lt;br/&gt;
+						It's completely user driven by people like you. &lt;br/&gt;
+						TMDb is currently used by millions of people every month.
+	  </string>
 </dict>
 </plist>
