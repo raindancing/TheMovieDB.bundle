@@ -1,5 +1,7 @@
 #themoviedb
 #note: right now, themoviedb only supports "en" for language
+import time
+
 TMDB_GETINFO_IMDB = 'http://api.themoviedb.org/2.1/Movie.imdbLookup/en/json/a3dc111e66105f6387e99393813ae4d5/%s'
 TMDB_GETINFO_TMDB = 'http://api.themoviedb.org/2.1/Movie.getInfo/en/json/a3dc111e66105f6387e99393813ae4d5/%s'
 TMDB_GETINFO_HASH = 'http://api.themoviedb.org/2.1/Hash.getInfo/en/json/a3dc111e66105f6387e99393813ae4d5/%s'
@@ -41,7 +43,11 @@ class TMDbAgent(Agent.Movies):
   def update(self, metadata, media, lang): 
     proxy = Proxy.Preview
     try:
-      tmdb_dict = JSON.ObjectFromURL(TMDB_GETINFO_TMDB % metadata.id)[0] #get the full TMDB info record using the TMDB id
+      tmdb_info = HTTP.Request(TMDB_GETINFO_TMDB % metadata.id).content
+      if tmdb_info.count('503 Service Unavailable') > 0:
+        time.sleep(5)
+        tmdb_info = HTTP.Request(TMDB_GETINFO_TMDB % metadata.id, cacheTime=0).content
+      tmdb_dict = JSON.ObjectFromString(tmdb_info)[0] #get the full TMDB info record using the TMDB id
     except:
       Log('Exception fetching JSON from theMovieDB (1).')
       return None
@@ -126,7 +132,11 @@ class TMDbAgent(Agent.Movies):
     
   def get_tmdb_id(self, imdb_id):
     try:
-      tmdb_dict = JSON.ObjectFromURL(TMDB_GETINFO_IMDB % str(imdb_id))[0]
+      tmdb_info = HTTP.Request(TMDB_GETINFO_IMDB % str(imdb_id)).content
+      if tmdb_info.count('503 Service Unavailable') > 0:
+        time.sleep(5)
+        tmdb_info = HTTP.Request(TMDB_GETINFO_IMDB % str(imdb_id), cacheTime=0).content
+      tmdb_dict = JSON.ObjectFromString(tmdb_info)[0]
     except:
       Log('Exception fetching JSON from theMovieDB (2).')
       return None
