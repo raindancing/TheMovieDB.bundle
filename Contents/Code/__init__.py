@@ -102,9 +102,11 @@ class TMDbAgent(Agent.Movies):
         role.actor = member['name']
     
     i = 0
+    valid_names = list()
     for p in tmdb_dict['posters']:
       if p['image']['size'] == 'original':
         i += 1
+        valid_names.append(p['image']['url'])
         if p['image']['url'] not in metadata.posters:
           p_id = p['image']['id']
           
@@ -117,10 +119,14 @@ class TMDbAgent(Agent.Movies):
           try: metadata.posters[p['image']['url']] = proxy(thumb, sort_order = i)
           except: pass
     
+    metadata.posters.validate_keys(valid_names)
+    valid_names = list()
+    
     i = 0
     for b in tmdb_dict['backdrops']:
       if b['image']['size'] == 'original':
         i += 1
+        valid_names.append(b['image']['url'])
         if b['image']['url'] not in metadata.art:
           b_id = b['image']['id']
           for t in tmdb_dict['backdrops']:
@@ -129,6 +135,8 @@ class TMDbAgent(Agent.Movies):
               break 
           try: metadata.art[b['image']['url']] = proxy(thumb, sort_order = i)
           except: pass
+            
+    metadata.art.validate_keys(valid_names)
     
   def get_tmdb_id(self, imdb_id):
     try:
